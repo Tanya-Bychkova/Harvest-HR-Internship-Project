@@ -1,0 +1,2451 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Harvest HR Platform</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,800&f[]=cabinet-grotesk@700,800&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --color-gold: #f0a500;
+  --color-gold-hover: #c07800;
+  --color-gold-muted: rgba(240,165,0,0.08);
+  --color-navy: #0d1b2a;
+  --color-navy-light: #1a2d45;
+  --color-success: #3fb950;
+  --color-error: #f85149;
+  --color-info: #58a6ff;
+  --color-warning: #d29922;
+  --color-text: #1a1a1a;
+  --color-text-muted: #666;
+  --color-text-faint: #aaa;
+  --color-bg: #f5f4f0;
+  --color-surface: #ffffff;
+  --color-surface-2: #f9f8f5;
+  --color-surface-3: #f0efe9;
+  --color-border: #e5e3db;
+  --color-divider: #ede9e3;
+  --font-body: 'Satoshi', sans-serif;
+  --font-display: 'Cabinet Grotesk', sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.12);
+  --transition: 180ms cubic-bezier(0.16,1,0.3,1);
+  --sidebar-w: 240px;
+  --header-h: 56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ===== LAYOUT ===== */
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--color-navy);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh;
+  z-index: 100;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  overflow-y: auto;
+}
+.sidebar-logo {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sidebar-logo-icon {
+  width: 34px; height: 34px;
+  background: var(--color-gold);
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sidebar-logo-text {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+}
+.sidebar-logo-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.sidebar-section {
+  padding: 16px 12px 8px;
+}
+.sidebar-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 8px;
+  margin-bottom: 4px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition);
+  margin-bottom: 2px;
+  user-select: none;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.9);
+}
+.nav-item.active {
+  background: rgba(240,165,0,0.12);
+  color: var(--color-gold);
+}
+.nav-item svg {
+  width: 16px; height: 16px;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+.nav-item.active svg, .nav-item:hover svg { opacity: 1; }
+
+.nav-badge {
+  margin-left: auto;
+  background: var(--color-gold);
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.sidebar-user:hover { background: rgba(255,255,255,0.06); }
+.sidebar-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-gold), #c07800);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 11px; color: #000; flex-shrink: 0;
+}
+.sidebar-user-name {
+  font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85);
+}
+.sidebar-user-role {
+  font-size: 10px; color: rgba(255,255,255,0.35);
+}
+
+/* ===== HEADER ===== */
+.header {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-w);
+  right: 0;
+  height: var(--header-h);
+  background: rgba(245,244,240,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  z-index: 90;
+}
+.header-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--color-text);
+  flex: 1;
+}
+.header-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  width: 220px;
+}
+.header-search input {
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  color: var(--color-text);
+  width: 100%;
+  outline: none;
+  font-family: var(--font-body);
+}
+.header-search input::placeholder { color: var(--color-text-faint); }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.header-btn {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition: all var(--transition);
+  position: relative;
+}
+.header-btn:hover {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+}
+.notif-dot {
+  position: absolute;
+  top: 6px; right: 6px;
+  width: 7px; height: 7px;
+  background: var(--color-gold);
+  border-radius: 50%;
+  border: 2px solid var(--color-bg);
+}
+
+/* Дропдаун уведомлений */
+.notif-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: none;
+  z-index: 200;
+  overflow: hidden;
+}
+.notif-dropdown-header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notif-dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background var(--transition);
+  border-bottom: 1px solid var(--color-divider);
+}
+.notif-dropdown-item:last-child { border-bottom: none; }
+.notif-dropdown-item:hover { background: var(--color-surface-2); }
+.notif-dropdown-item.unread { background: rgba(240,165,0,0.04); }
+.notif-dropdown-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  min-height: calc(100vh - var(--header-h));
+  overflow-y: auto;
+  height: calc(100vh - var(--header-h));
+}
+
+/* ===== СТРАНИЦЫ ===== */
+.page {
+  display: none;
+  padding: 24px;
+  max-width: 1400px;
+}
+.page.active { display: block; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  gap: 16px;
+}
+.page-title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 24px;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+.page-subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+/* ===== КАРТОЧКИ ===== */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition);
+}
+.card:hover { box-shadow: var(--shadow-md); }
+.card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-text);
+  margin-bottom: 14px;
+}
+  </style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+  <!-- САЙДБАР -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div>
+        <div class="sidebar-logo-text">Harvest Agro</div>
+        <div class="sidebar-logo-sub">HR Platform</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Главное</div>
+      <div class="nav-item active" data-page="dashboard">
+        <i data-lucide="layout-dashboard"></i> Главная
+      </div>
+      <div class="nav-item" data-page="profile">
+        <i data-lucide="user"></i> Мой профиль
+      </div>
+      <div class="nav-item" data-page="tasks">
+        <i data-lucide="check-square"></i> Задачи
+        <span class="nav-badge">3</span>
+      </div>
+      <div class="nav-item" data-page="documents">
+        <i data-lucide="file-text"></i> Документы
+        <span class="nav-badge">2</span>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Обучение</div>
+      <div class="nav-item" data-page="knowledge">
+        <i data-lucide="book-open"></i> База знаний
+      </div>
+      <div class="nav-item" data-page="surveys">
+        <i data-lucide="bar-chart-2"></i> Опросы
+      </div>
+      <div class="nav-item" data-page="onboarding">
+        <i data-lucide="map"></i> Адаптация
+      </div>
+      <div class="nav-item" data-page="calendar">
+        <i data-lucide="calendar"></i> Календарь
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">HR</div>
+      <div class="nav-item" data-page="hr-requests">
+        <i data-lucide="message-circle"></i> Обращения в HR
+      </div>
+      <div class="nav-item" data-page="employees">
+        <i data-lucide="users"></i> Сотрудники
+      </div>
+      <div class="nav-item" data-page="recruitment">
+        <i data-lucide="user-plus"></i> Найм
+      </div>
+      <div class="nav-item" data-page="analytics">
+        <i data-lucide="trending-up"></i> Аналитика
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Система</div>
+      <div class="nav-item" data-page="notifications">
+        <i data-lucide="bell"></i> Уведомления
+        <span class="nav-badge">2</span>
+      </div>
+      <div class="nav-item" data-page="settings">
+        <i data-lucide="settings"></i> Настройки
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">ЖА</div>
+        <div>
+          <div class="sidebar-user-name">Акылова Жансая</div>
+          <div class="sidebar-user-role">HR-менеджер</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ХЕДЕР -->
+  <header class="header">
+    <div class="header-title" id="header-page-title">Главная</div>
+
+    <div class="header-search">
+      <i data-lucide="search" style="width:14px;height:14px;color:var(--color-text-faint)"></i>
+      <input type="text" placeholder="Поиск..." />
+    </div>
+
+    <div class="header-actions">
+      <!-- Тема -->
+      <button class="header-btn" id="theme-toggle" title="Сменить тему">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+
+      <!-- Уведомления -->
+      <div style="position:relative">
+        <button class="header-btn" id="notif-btn" title="Уведомления">
+          <i data-lucide="bell" style="width:16px;height:16px"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="notif-dropdown" id="notif-dropdown">
+          <div class="notif-dropdown-header">
+            Уведомления
+            <span style="font-size:11px;color:var(--color-gold);font-weight:600">2 новых</span>
+          </div>
+          <div class="notif-dropdown-item unread" onclick="navigate('documents')">
+            <span class="notif-dropdown-dot"></span>
+            <div>
+              <div style="font-size:13px;font-weight:600">Новый документ требует подтверждения</div>
+              <div style="font-size:11px;color:var(--color-text-muted);margin-top:2px">Регламент адаптации 2026</div>
+            </div>
+          </div>
+          <div class="notif-dropdown-item unread" onclick="navigate('tasks')">
+            <span class="notif-dropdown-dot"></span>
+            <div>
+              <div style="font-size:13px;font-weight:600">Назначена новая задача</div>
+              <div style="font-size:11px;color:var(--color-text-muted);margin-top:2px">Аудит систем · до 05.05.2026</div>
+            </div>
+          </div>
+          <div class="notif-dropdown-item" onclick="navigate('surveys')">
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--color-border);margin-top:5px;flex-shrink:0"></div>
+            <div>
+              <div style="font-size:13px;font-weight:600">Новый опрос вовлечённости</div>
+              <div style="font-size:11px;color:var(--color-text-muted);margin-top:2px">До 10.05.2026</div>
+            </div>
+          </div>
+          <div style="padding:10px 16px;text-align:center">
+            <button class="btn btn-secondary" onclick="navigate('notifications')" style="font-size:12px;width:100%;justify-content:center">
+              Все уведомления
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Профиль -->
+      <button class="header-btn" onclick="navigate('profile')" title="Профиль">
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--color-gold),#c07800);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#000">ЖА</div>
+      </button>
+    </div>
+  </header>
+
+  <div class="main-content" id="main-content">
+<div class="app-layout">
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <path d="M14 3 L24 8 L24 16 C24 21 14 25 14 25 C14 25 4 21 4 16 L4 8 Z" fill="#f0a500" opacity="0.15"/>
+        <path d="M14 3 L24 8 L24 16 C24 21 14 25 14 25 C14 25 4 21 4 16 L4 8 Z" stroke="#f0a500" stroke-width="1.5" fill="none"/>
+        <path d="M10 14 L13 17 L18 11" stroke="#f0a500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <div>HARVEST</div>
+        <div class="logo-sub">AGRO HR</div>
+      </div>
+    </div>
+
+    <div class="header-spacer"></div>
+
+    <div class="header-search">
+      <i data-lucide="search" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+      <input type="text" placeholder="Поиск сотрудников, задач..." />
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="navigate('notifications')" title="Уведомления">
+        <i data-lucide="bell" style="width:16px;height:16px"></i>
+        <span class="badge"></span>
+      </button>
+      <button class="icon-btn" title="Настройки">
+        <i data-lucide="settings" style="width:16px;height:16px"></i>
+      </button>
+      <div class="avatar" title="Акылова Жансая">ЖА</div>
+    </div>
+  </header>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar">
+    <span class="sidebar-section-label">Главное</span>
+
+    <div class="nav-item active" onclick="navigate('dashboard')">
+      <i data-lucide="layout-dashboard" style="width:16px;height:16px"></i>
+      Главная
+    </div>
+    <div class="nav-item" onclick="navigate('profile')">
+      <i data-lucide="user" style="width:16px;height:16px"></i>
+      Мой профиль
+    </div>
+    <div class="nav-item" onclick="navigate('tasks')">
+      <i data-lucide="check-square" style="width:16px;height:16px"></i>
+      Задачи
+      <span class="nav-count">3</span>
+    </div>
+    <div class="nav-item" onclick="navigate('documents')">
+      <i data-lucide="file-text" style="width:16px;height:16px"></i>
+      Документы
+      <span class="nav-count green">2</span>
+    </div>
+
+    <span class="sidebar-section-label">Обучение</span>
+
+    <div class="nav-item" onclick="navigate('knowledge')">
+      <i data-lucide="book-open" style="width:16px;height:16px"></i>
+      База знаний
+    </div>
+    <div class="nav-item" onclick="navigate('onboarding')">
+      <i data-lucide="git-branch" style="width:16px;height:16px"></i>
+      Адаптация
+    </div>
+    <div class="nav-item" onclick="navigate('surveys')">
+      <i data-lucide="bar-chart-2" style="width:16px;height:16px"></i>
+      Опросы
+    </div>
+
+    <span class="sidebar-section-label">Коммуникации</span>
+
+    <div class="nav-item" onclick="navigate('calendar')">
+      <i data-lucide="calendar" style="width:16px;height:16px"></i>
+      Календарь
+    </div>
+    <div class="nav-item" onclick="navigate('hr-requests')">
+      <i data-lucide="message-square" style="width:16px;height:16px"></i>
+      Обращения в HR
+    </div>
+    <div class="nav-item" onclick="navigate('notifications')">
+      <i data-lucide="bell" style="width:16px;height:16px"></i>
+      Уведомления
+    </div>
+
+    <div class="sidebar-divider"></div>
+    <span class="sidebar-section-label">HR-отдел</span>
+
+    <div class="nav-item" onclick="navigate('employees')">
+      <i data-lucide="users" style="width:16px;height:16px"></i>
+      Сотрудники
+    </div>
+    <div class="nav-item" onclick="navigate('recruitment')">
+      <i data-lucide="user-plus" style="width:16px;height:16px"></i>
+      Найм
+    </div>
+    <div class="nav-item" onclick="navigate('analytics')">
+      <i data-lucide="trending-up" style="width:16px;height:16px"></i>
+      Аналитика
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="nav-item" style="color:var(--color-error)">
+      <i data-lucide="log-out" style="width:16px;height:16px"></i>
+      Выход
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main class="main">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Добро пожаловать, Жансая 👋</div>
+          <div class="page-subtitle">Понедельник, 4 мая 2026 — Harvest Agro Holding</div>
+        </div>
+        <button class="btn btn-primary" onclick="navigate('hr-requests')">
+          <i data-lucide="plus" style="width:14px;height:14px"></i>
+          Написать в HR
+        </button>
+      </div>
+
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Сотрудников в группе</div>
+          <div class="stat-value gold">34</div>
+          <div class="stat-delta up">↑ +2 за месяц</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Открытых задач</div>
+          <div class="stat-value blue">12</div>
+          <div class="stat-delta down">↑ 3 просрочено</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Time to Hire</div>
+          <div class="stat-value green">18д</div>
+          <div class="stat-delta up">↓ −3 дня</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Turnover Rate</div>
+          <div class="stat-value red">6%</div>
+          <div class="stat-delta down">↑ Апрель 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">KPI Achievement</div>
+          <div class="stat-value gold">78%</div>
+          <div class="stat-delta up">↑ +5% к марту</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">ФОТ / Выручка</div>
+          <div class="stat-value blue">11%</div>
+          <div class="stat-delta up">↓ норма</div>
+        </div>
+      </div>
+
+      <!-- CONTENT GRID -->
+      <div class="grid-2-1" style="align-items:start">
+
+        <!-- LEFT -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Мои задачи -->
+          <div class="card">
+            <div class="card-title">Мои задачи</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Задача</th>
+                    <th>Дедлайн</th>
+                    <th>Статус</th>
+                    <th>Приоритет</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Провести аудит систем</td>
+                    <td style="color:var(--color-text-muted)">05.05.2026</td>
+                    <td><span class="tag tag-blue">В работе</span></td>
+                    <td><span class="tag tag-red">Высокий</span></td>
+                  </tr>
+                  <tr>
+                    <td>Составить CJM сотрудника</td>
+                    <td style="color:var(--color-text-muted)">06.05.2026</td>
+                    <td><span class="tag tag-gray">Новая</span></td>
+                    <td><span class="tag tag-gold">Средний</span></td>
+                  </tr>
+                  <tr>
+                    <td>Бенчмарк платформ</td>
+                    <td style="color:var(--color-error)">04.05.2026</td>
+                    <td><span class="tag tag-red">Просрочена</span></td>
+                    <td><span class="tag tag-red">Высокий</span></td>
+                  </tr>
+                  <tr>
+                    <td>Описать UX барьеры</td>
+                    <td style="color:var(--color-text-muted)">08.05.2026</td>
+                    <td><span class="tag tag-gray">Новая</span></td>
+                    <td><span class="tag tag-gray">Низкий</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div style="margin-top:14px">
+              <button class="btn btn-secondary" onclick="navigate('tasks')" style="width:100%;justify-content:center">
+                Все задачи →
+              </button>
+            </div>
+          </div>
+
+          <!-- Адаптация -->
+          <div class="card">
+            <div class="card-title">Мой план адаптации</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+                  <span>Знакомство с командой</span>
+                  <span style="color:var(--color-success)">✓ Готово</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill green" style="width:100%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+                  <span>Изучение регламентов</span>
+                  <span style="color:var(--color-gold)">60%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+                  <span>Прохождение обучения</span>
+                  <span style="color:var(--color-text-muted)">0%</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+                  <span>Оценка за 30 дней</span>
+                  <span style="color:var(--color-text-muted)">Ожидает</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- RIGHT -->
+        <div style="display:flex;flex-direction:column;gap:16px">
+
+          <!-- Быстрые действия -->
+          <div class="card">
+            <div class="card-title">Быстрые действия</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;gap:10px" onclick="navigate('hr-requests')">
+                <i data-lucide="message-circle" style="width:15px;height:15px;color:var(--color-gold)"></i>
+                Написать в HR
+              </button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;gap:10px">
+                <i data-lucide="file-plus" style="width:15px;height:15px;color:var(--color-info)"></i>
+                Заказать справку
+              </button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;gap:10px">
+                <i data-lucide="umbrella" style="width:15px;height:15px;color:var(--color-success)"></i>
+                Подать на отпуск
+              </button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;gap:10px">
+                <i data-lucide="map-pin" style="width:15px;height:15px;color:var(--color-warning)"></i>
+                Оформить командировку
+              </button>
+              <button class="btn btn-secondary" style="width:100%;justify-content:flex-start;gap:10px">
+                <i data-lucide="heart-pulse" style="width:15px;height:15px;color:var(--color-error)"></i>
+                Больничный / Отгул
+              </button>
+            </div>
+          </div>
+
+          <!-- Уведомления -->
+          <div class="card">
+            <div class="card-title">Последние уведомления</div>
+            <div>
+              <div class="notif-item unread">
+                <div class="notif-dot"></div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">Новый документ</div>
+                  <div style="font-size:12px;color:var(--color-text-muted)">Регламент адаптации 2026</div>
+                </div>
+              </div>
+              <div class="notif-item unread">
+                <div class="notif-dot"></div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">Назначена задача</div>
+                  <div style="font-size:12px;color:var(--color-text-muted)">Провести аудит систем</div>
+                </div>
+              </div>
+              <div class="notif-item">
+                <div class="notif-dot read"></div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">Новый опрос</div>
+                  <div style="font-size:12px;color:var(--color-text-muted)">Опрос вовлечённости сотрудников</div>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-ghost" onclick="navigate('notifications')" style="width:100%;justify-content:center;margin-top:8px;font-size:12px">
+              Все уведомления →
+            </button>
+          </div>
+
+          <!-- Отпуск -->
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <div class="card-title" style="margin-bottom:0">Отпуск</div>
+              <span class="tag tag-green">Доступно</span>
+            </div>
+            <div class="stat-value gold" style="font-size:36px">14</div>
+            <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">дней осталось из 28</div>
+            <div class="progress-bar" style="margin-top:12px">
+              <div class="progress-fill green" style="width:50%"></div>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px">
+              Подать заявку
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<!-- ===== ПРОФИЛЬ ===== -->
+<div class="page" id="page-profile">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Мой профиль</div>
+      <div class="page-subtitle">Личная информация и карточка сотрудника</div>
+    </div>
+    <button class="btn btn-secondary">
+      <i data-lucide="edit-3" style="width:14px;height:14px"></i>
+      Редактировать
+    </button>
+  </div>
+
+  <div class="grid-2-1" style="align-items:start">
+    <!-- LEFT: карточка -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <div class="card">
+        <div style="display:flex;gap:20px;align-items:center;margin-bottom:24px">
+          <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--color-gold),#c07800);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:24px;color:#000;flex-shrink:0">ЖА</div>
+          <div>
+            <div style="font-family:var(--font-display);font-size:20px;font-weight:800">Акылова Жансая Раиканована</div>
+            <div style="color:var(--color-text-muted);font-size:13px;margin-top:3px">HR-менеджер</div>
+            <div style="margin-top:8px;display:flex;gap:6px">
+              <span class="tag tag-green">Активна</span>
+              <span class="tag tag-gold">HR</span>
+              <span class="tag tag-blue">Астана</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <div class="form-label">Компания</div>
+            <div style="font-size:13px">ТОО «Харвест Агро Холдинг»</div>
+          </div>
+          <div>
+            <div class="form-label">Отдел</div>
+            <div style="font-size:13px">HR-отдел</div>
+          </div>
+          <div>
+            <div class="form-label">Дата приёма</div>
+            <div style="font-size:13px">19.09.2022</div>
+          </div>
+          <div>
+            <div class="form-label">Стаж</div>
+            <div style="font-size:13px">3 года 7 месяцев</div>
+          </div>
+          <div>
+            <div class="form-label">Телефон</div>
+            <div style="font-size:13px">8 778 234 2313</div>
+          </div>
+          <div>
+            <div class="form-label">Email</div>
+            <div style="font-size:13px">zh.akylova@harvest.kz</div>
+          </div>
+          <div>
+            <div class="form-label">Руководитель</div>
+            <div style="font-size:13px">Капенова Жанар Жакеновна</div>
+          </div>
+          <div>
+            <div class="form-label">Дислокация</div>
+            <div style="font-size:13px">Астана, Казахстан</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Документы сотрудника -->
+      <div class="card">
+        <div class="card-title">Чеклист документов при приёме</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Удостоверение личности (копия)
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Диплом об образовании
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Трудовая книжка
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Медицинская справка 075
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Справка о псих. и нарко. учёте
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="clock" style="width:15px;height:15px;color:var(--color-warning)"></i>
+              Военный билет
+            </div>
+            <span class="tag tag-gold">Ожидается</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Резюме
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Фото 3×4
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <i data-lucide="check-circle-2" style="width:15px;height:15px;color:var(--color-success)"></i>
+              Реквизиты банковского счёта
+            </div>
+            <span class="tag tag-green">Загружено</span>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <div class="progress-bar">
+            <div class="progress-fill green" style="width:88%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--color-text-muted);margin-top:5px">8 из 9 документов загружено</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div style="display:flex;flex-direction:column;gap:16px">
+
+      <!-- Зарплата -->
+      <div class="card">
+        <div class="card-title">Зарплата</div>
+        <div class="stat-value gold" style="font-size:30px">— ₸</div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">Следующая выплата: 10.05.2026</div>
+        <div style="height:1px;background:var(--color-border);margin:14px 0"></div>
+        <button class="btn btn-secondary" style="width:100%;justify-content:center;font-size:12px">
+          <i data-lucide="file-text" style="width:13px;height:13px"></i>
+          Расчётный лист
+        </button>
+      </div>
+
+      <!-- Отпуск -->
+      <div class="card">
+        <div class="card-title">Баланс отпуска</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div class="stat-value gold" style="font-size:30px">14</div>
+            <div style="font-size:12px;color:var(--color-text-muted)">из 28 дней</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--color-text-muted)">Использовано</div>
+            <div style="font-size:20px;font-weight:700;color:var(--color-text-muted)">14</div>
+          </div>
+        </div>
+        <div class="progress-bar" style="margin-top:12px">
+          <div class="progress-fill green" style="width:50%"></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px">
+          Подать на отпуск
+        </button>
+      </div>
+
+      <!-- Контакты HR -->
+      <div class="card">
+        <div class="card-title">Мой HR-партнёр</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0">ЖК</div>
+          <div>
+            <div style="font-size:13px;font-weight:600">Капенова Жанар</div>
+            <div style="font-size:12px;color:var(--color-text-muted)">HRD · 87014888333</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" onclick="navigate('hr-requests')" style="width:100%;justify-content:center;margin-top:14px;font-size:12px">
+          <i data-lucide="message-circle" style="width:13px;height:13px"></i>
+          Написать
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ЗАДАЧИ ===== -->
+<div class="page" id="page-tasks">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Задачи</div>
+      <div class="page-subtitle">Неделя 1 — Аудит и анализ</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-secondary">
+        <i data-lucide="filter" style="width:14px;height:14px"></i>
+        Фильтр
+      </button>
+      <button class="btn btn-primary">
+        <i data-lucide="plus" style="width:14px;height:14px"></i>
+        Новая задача
+      </button>
+    </div>
+  </div>
+
+  <!-- Фильтры -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn btn-primary" style="font-size:12px;padding:5px 14px">Все (12)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Новые (4)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">В работе (5)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px;color:var(--color-error)">Просрочены (3)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Выполнены (0)</button>
+  </div>
+
+  <!-- Таблица задач -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="padding-left:20px">Задача</th>
+            <th>Назначена</th>
+            <th>Дедлайн</th>
+            <th>Приоритет</th>
+            <th>Статус</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="font-weight:600;font-size:13px">Аудит систем</div>
+              <div style="font-size:11px;color:var(--color-text-muted)">Проверить текущие инструменты HR</div>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="width:24px;height:24px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">ЖК</div>
+                <span style="font-size:12px;color:var(--color-text-muted)">HR</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--color-text-muted)">05.05.2026</td>
+            <td><span class="tag tag-red">Высокий</span></td>
+            <td><span class="tag tag-blue">В работе</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="check" style="width:12px;height:12px"></i>
+                Выполнено
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="font-weight:600;font-size:13px">Бенчмарк платформ</div>
+              <div style="font-size:11px;color:var(--color-text-muted)">Сравнить Bitrix, Doodocs, аналоги</div>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="width:24px;height:24px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">ЖК</div>
+                <span style="font-size:12px;color:var(--color-text-muted)">HR</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--color-error)">04.05.2026 ⚠</td>
+            <td><span class="tag tag-red">Высокий</span></td>
+            <td><span class="tag tag-red">Просрочена</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="check" style="width:12px;height:12px"></i>
+                Выполнено
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="font-weight:600;font-size:13px">CJM сотрудника</div>
+              <div style="font-size:11px;color:var(--color-text-muted)">Описать путь сотрудника в компании</div>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="width:24px;height:24px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">ГТ</div>
+                <span style="font-size:12px;color:var(--color-text-muted)">IT</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--color-text-muted)">06.05.2026</td>
+            <td><span class="tag tag-gold">Средний</span></td>
+            <td><span class="tag tag-gray">Новая</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="play" style="width:12px;height:12px"></i>
+                В работу
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="font-weight:600;font-size:13px">UX барьеры</div>
+              <div style="font-size:11px;color:var(--color-text-muted)">Описать проблемные точки интерфейса</div>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="width:24px;height:24px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">ГТ</div>
+                <span style="font-size:12px;color:var(--color-text-muted)">IT</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--color-text-muted)">08.05.2026</td>
+            <td><span class="tag tag-gray">Низкий</span></td>
+            <td><span class="tag tag-gray">Новая</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="play" style="width:12px;height:12px"></i>
+                В работу
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="font-weight:600;font-size:13px">Архитектура системы</div>
+              <div style="font-size:11px;color:var(--color-text-muted)">Схема БД и API endpoints</div>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="width:24px;height:24px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">ГТ</div>
+                <span style="font-size:12px;color:var(--color-text-muted)">IT</span>
+              </div>
+            </td>
+            <td style="font-size:12px;color:var(--color-text-muted)">11.05.2026</td>
+            <td><span class="tag tag-red">Высокий</span></td>
+            <td><span class="tag tag-gray">Новая</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="play" style="width:12px;height:12px"></i>
+                В работу
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- ===== ДОКУМЕНТЫ ===== -->
+<div class="page" id="page-documents">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Документы</div>
+      <div class="page-subtitle">Документы и материалы от HR</div>
+    </div>
+    <button class="btn btn-primary">
+      <i data-lucide="upload" style="width:14px;height:14px"></i>
+      Загрузить документ
+    </button>
+  </div>
+
+  <!-- Фильтры -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn btn-primary" style="font-size:12px;padding:5px 14px">Все</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Регламенты</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Приказы</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Инструкции</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px;color:var(--color-gold)">⚠ Требуют подтверждения (2)</button>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="padding-left:20px">Документ</th>
+            <th>Категория</th>
+            <th>Загружен</th>
+            <th>Статус</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:rgba(88,166,255,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <i data-lucide="file-text" style="width:16px;height:16px;color:var(--color-info)"></i>
+                </div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Регламент адаптации 2026</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">PDF · 1.2 MB</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-blue">Регламент</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">02.05.2026</td>
+            <td><span class="tag tag-red">Не подтверждён</span></td>
+            <td>
+              <div style="display:flex;gap:6px">
+                <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                  <i data-lucide="eye" style="width:12px;height:12px"></i>
+                  Открыть
+                </button>
+                <button class="btn btn-primary" style="font-size:11px;padding:4px 10px">
+                  <i data-lucide="check" style="width:12px;height:12px"></i>
+                  Ознакомлен
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:rgba(63,185,80,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <i data-lucide="shield" style="width:16px;height:16px;color:var(--color-success)"></i>
+                </div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Инструкция по ТБ — Элеватор</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">PDF · 3.4 MB</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-green">Инструкция ТБ</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">28.04.2026</td>
+            <td><span class="tag tag-red">Не подтверждён</span></td>
+            <td>
+              <div style="display:flex;gap:6px">
+                <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                  <i data-lucide="eye" style="width:12px;height:12px"></i>
+                  Открыть
+                </button>
+                <button class="btn btn-primary" style="font-size:11px;padding:4px 10px">
+                  <i data-lucide="check" style="width:12px;height:12px"></i>
+                  Ознакомлен
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:rgba(240,165,0,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <i data-lucide="file" style="width:16px;height:16px;color:var(--color-gold)"></i>
+                </div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Регламент приёма сотрудников</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">DOCX · 0.8 MB</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-gold">Регламент</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">15.04.2026</td>
+            <td><span class="tag tag-green">Подтверждён ✓</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="download" style="width:12px;height:12px"></i>
+                Скачать
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;background:rgba(248,81,73,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                  <i data-lucide="file" style="width:16px;height:16px;color:var(--color-error)"></i>
+                </div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Политика конфиденциальности</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">PDF · 0.5 MB</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="tag tag-gray">Политика</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">01.01.2026</td>
+            <td><span class="tag tag-green">Подтверждён ✓</span></td>
+            <td>
+              <button class="btn btn-secondary" style="font-size:11px;padding:4px 10px">
+                <i data-lucide="download" style="width:12px;height:12px"></i>
+                Скачать
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== БАЗА ЗНАНИЙ ===== -->
+<div class="page" id="page-knowledge">
+  <div class="page-header">
+    <div>
+      <div class="page-title">База знаний</div>
+      <div class="page-subtitle">Статьи, инструкции и ответы на частые вопросы</div>
+    </div>
+    <button class="btn btn-primary">
+      <i data-lucide="plus" style="width:14px;height:14px"></i>
+      Новая статья
+    </button>
+  </div>
+
+  <!-- Поиск -->
+  <div class="header-search" style="width:100%;max-width:500px;margin-bottom:24px">
+    <i data-lucide="search" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+    <input type="text" placeholder="Поиск по базе знаний..." style="font-size:14px" />
+  </div>
+
+  <!-- FAQ блок -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">
+      <i data-lucide="help-circle" style="width:14px;height:14px;display:inline;margin-right:6px"></i>
+      Часто задаваемые вопросы
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">💰 Когда зарплата и как она рассчитана?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">Выплата 10-го и 25-го числа каждого месяца. Расчётный лист доступен в профиле.</div>
+      </div>
+      <div style="height:1px;background:var(--color-border)"></div>
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">🏖️ Сколько осталось отпускных дней и как их оформить?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">Баланс отпуска виден в профиле. Подать заявку можно через кнопку "Подать на отпуск".</div>
+      </div>
+      <div style="height:1px;background:var(--color-border)"></div>
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">🏥 Как оформить больничный или отгул?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">Создайте обращение в HR с категорией "Больничный/Отгул" и прикрепите справку.</div>
+      </div>
+      <div style="height:1px;background:var(--color-border)"></div>
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">📄 Где взять справку о доходах или с места работы?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">Нажмите "Заказать справку" в личном кабинете. Готовность — 1-2 рабочих дня.</div>
+      </div>
+      <div style="height:1px;background:var(--color-border)"></div>
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">✈️ Как оформить командировку и получить компенсацию?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">Подайте обращение с категорией "Командировка" минимум за 3 рабочих дня.</div>
+      </div>
+      <div style="height:1px;background:var(--color-border)"></div>
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">🏠 Можно ли работать удалённо или изменить график?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">Согласуйте с руководителем и направьте обращение в HR с обоснованием.</div>
+      </div>
+      <div style="height:1px;background:var(--color-border)"></div>
+      <div style="padding:12px;border-radius:var(--radius-md);cursor:pointer;transition:background var(--transition)" onmouseover="this.style.background='var(--color-surface-3)'" onmouseout="this.style.background='transparent'">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-size:13px;font-weight:600">🤝 К кому обратиться по рабочим вопросам?</div>
+          <i data-lucide="chevron-right" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:3px">HR-партнёр — Капенова Жанар, 87014888333. Или напишите через модуль "Обращения в HR".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Статьи по категориям -->
+  <div class="grid-3">
+    <div class="card" style="cursor:pointer" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
+      <div style="width:40px;height:40px;background:var(--color-gold-muted);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+        <i data-lucide="user-check" style="width:18px;height:18px;color:var(--color-gold)"></i>
+      </div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:4px">Онбординг</div>
+      <div style="font-size:12px;color:var(--color-text-muted)">5 статей</div>
+    </div>
+    <div class="card" style="cursor:pointer" onmouseover="this.style.borderColor='var(--color-info)'" onmouseout="this.style.borderColor='var(--color-border)'">
+      <div style="width:40px;height:40px;background:rgba(88,166,255,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+        <i data-lucide="shield-check" style="width:18px;height:18px;color:var(--color-info)"></i>
+      </div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:4px">Техника безопасности</div>
+      <div style="font-size:12px;color:var(--color-text-muted)">8 статей</div>
+    </div>
+    <div class="card" style="cursor:pointer" onmouseover="this.style.borderColor='var(--color-success)'" onmouseout="this.style.borderColor='var(--color-border)'">
+      <div style="width:40px;height:40px;background:rgba(63,185,80,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+        <i data-lucide="briefcase" style="width:18px;height:18px;color:var(--color-success)"></i>
+      </div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:4px">HR-политики</div>
+      <div style="font-size:12px;color:var(--color-text-muted)">6 статей</div>
+    </div>
+    <div class="card" style="cursor:pointer" onmouseover="this.style.borderColor='var(--color-warning)'" onmouseout="this.style.borderColor='var(--color-border)'">
+      <div style="width:40px;height:40px;background:rgba(210,153,34,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+        <i data-lucide="wheat" style="width:18px;height:18px;color:var(--color-warning)"></i>
+      </div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:4px">Агро-процессы</div>
+      <div style="font-size:12px;color:var(--color-text-muted)">12 статей</div>
+    </div>
+    <div class="card" style="cursor:pointer" onmouseover="this.style.borderColor='var(--color-error)'" onmouseout="this.style.borderColor='var(--color-border)'">
+      <div style="width:40px;height:40px;background:rgba(248,81,73,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+        <i data-lucide="landmark" style="width:18px;height:18px;color:var(--color-error)"></i>
+      </div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:4px">Правовые вопросы</div>
+      <div style="font-size:12px;color:var(--color-text-muted)">4 статьи</div>
+    </div>
+    <div class="card" style="cursor:pointer" onmouseover="this.style.borderColor='var(--color-purple,#a86fdf)'" onmouseout="this.style.borderColor='var(--color-border)'">
+      <div style="width:40px;height:40px;background:rgba(168,111,223,0.1);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+        <i data-lucide="graduation-cap" style="width:18px;height:18px;color:#a86fdf"></i>
+      </div>
+      <div style="font-weight:700;font-size:14px;margin-bottom:4px">Обучение</div>
+      <div style="font-size:12px;color:var(--color-text-muted)">3 статьи</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== АДАПТАЦИЯ ===== -->
+<div class="page" id="page-onboarding">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Адаптация</div>
+      <div class="page-subtitle">Ваш план на первые 30 дней — Harvest Agro Holding</div>
+    </div>
+    <span class="tag tag-gold" style="font-size:13px;padding:6px 14px">60% выполнено</span>
+  </div>
+
+  <!-- Общий прогресс -->
+  <div class="card" style="margin-bottom:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-family:var(--font-display);font-weight:700;font-size:15px">Общий прогресс адаптации</div>
+      <div style="font-size:13px;color:var(--color-text-muted)">День 15 из 30</div>
+    </div>
+    <div class="progress-bar" style="height:10px">
+      <div class="progress-fill" style="width:60%"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--color-text-muted)">
+      <span>Старт: 19.04.2026</span>
+      <span>Дедлайн: 19.05.2026</span>
+    </div>
+  </div>
+
+  <!-- Шаги -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+
+    <div class="card" style="border-color:var(--color-success)">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(63,185,80,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i data-lucide="check-circle-2" style="width:18px;height:18px;color:var(--color-success)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:14px">1. Знакомство с командой и офисом</div>
+            <span class="tag tag-green">Завершено</span>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">Встреча с руководителем, обход офиса, знакомство с коллегами</div>
+          <div style="font-size:11px;color:var(--color-success);margin-top:6px">✓ Выполнено 20.04.2026</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--color-success)">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(63,185,80,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i data-lucide="check-circle-2" style="width:18px;height:18px;color:var(--color-success)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:14px">2. Оформление документов</div>
+            <span class="tag tag-green">Завершено</span>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">Сдача 9 обязательных документов в HR (осталось: военный билет)</div>
+          <div style="font-size:11px;color:var(--color-success);margin-top:6px">✓ Выполнено 22.04.2026</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--color-success)">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:rgba(63,185,80,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i data-lucide="check-circle-2" style="width:18px;height:18px;color:var(--color-success)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:14px">3. Изучение структуры компании</div>
+            <span class="tag tag-green">Завершено</span>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">19 аффилированных ТОО, регионы присутствия, ключевые лица</div>
+          <div style="font-size:11px;color:var(--color-success);margin-top:6px">✓ Выполнено 25.04.2026</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--color-gold)">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--color-gold-muted);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i data-lucide="book-open" style="width:18px;height:18px;color:var(--color-gold)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:14px">4. Изучение регламентов и политик</div>
+            <span class="tag tag-gold">В процессе</span>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:4px">Регламент адаптации, приёма, увольнения, обучения — 6 документов</div>
+          <div class="progress-bar" style="margin-top:10px">
+            <div class="progress-fill" style="width:60%"></div>
+          </div>
+          <div style="font-size:11px;color:var(--color-text-muted);margin-top:5px">3 из 5 документов прочитано</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--color-surface-3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i data-lucide="graduation-cap" style="width:18px;height:18px;color:var(--color-text-faint)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:14px;color:var(--color-text-muted)">5. Прохождение вводного обучения</div>
+            <span class="tag tag-gray">Ожидает</span>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-faint);margin-top:4px">Онлайн-курс по продуктам и процессам Harvest Agro · Дедлайн: 10.05.2026</div>
+          <button class="btn btn-secondary" style="margin-top:10px;font-size:12px">
+            <i data-lucide="play" style="width:12px;height:12px"></i>
+            Начать обучение
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--color-surface-3);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <i data-lucide="star" style="width:18px;height:18px;color:var(--color-text-faint)"></i>
+        </div>
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div style="font-weight:700;font-size:14px;color:var(--color-text-muted)">6. Оценка за первые 30 дней</div>
+            <span class="tag tag-gray">Ожидает</span>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-faint);margin-top:4px">Встреча с руководителем, обратная связь · Дедлайн: 19.05.2026</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- ===== ОБРАЩЕНИЯ В HR ===== -->
+<div class="page" id="page-hr-requests">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Обращения в HR</div>
+      <div class="page-subtitle">Задайте вопрос или подайте заявку</div>
+    </div>
+    <button class="btn btn-primary" onclick="document.getElementById('new-request-form').style.display='block'">
+      <i data-lucide="plus" style="width:14px;height:14px"></i>
+      Новое обращение
+    </button>
+  </div>
+
+  <!-- Форма нового обращения -->
+  <div id="new-request-form" class="card" style="display:none;margin-bottom:20px;border-color:var(--color-gold)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-family:var(--font-display);font-weight:700;font-size:15px">Новое обращение</div>
+      <button class="btn btn-ghost" onclick="document.getElementById('new-request-form').style.display='none'">
+        <i data-lucide="x" style="width:16px;height:16px"></i>
+      </button>
+    </div>
+    <div class="grid-2" style="margin-bottom:16px">
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Категория</label>
+        <select class="form-input">
+          <option>Зарплата и выплаты</option>
+          <option>Отпуск / Отгул</option>
+          <option>Больничный</option>
+          <option>Справка о доходах</option>
+          <option>Командировка</option>
+          <option>График работы / Удалёнка</option>
+          <option>Рабочий вопрос / Проблема</option>
+          <option>Другое</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin:0">
+        <label class="form-label">Тема обращения</label>
+        <input type="text" class="form-input" placeholder="Кратко опишите тему..." />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Сообщение</label>
+      <textarea class="form-input" rows="4" placeholder="Подробно опишите ваш вопрос или ситуацию..."></textarea>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button class="btn btn-secondary" onclick="document.getElementById('new-request-form').style.display='none'">Отмена</button>
+      <button class="btn btn-primary">
+        <i data-lucide="send" style="width:14px;height:14px"></i>
+        Отправить
+      </button>
+    </div>
+  </div>
+
+  <!-- Фильтры -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+    <button class="btn btn-primary" style="font-size:12px;padding:5px 14px">Все (4)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Открытые (2)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Ожидают ответа (1)</button>
+    <button class="btn btn-secondary" style="font-size:12px;padding:5px 14px">Закрытые (2)</button>
+  </div>
+
+  <!-- Список обращений -->
+  <div style="display:flex;flex-direction:column;gap:12px">
+
+    <div class="card" style="border-color:var(--color-gold)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div style="font-weight:700;font-size:14px">Справка о доходах для банка</div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Категория: Справка о доходах · 02.05.2026</div>
+        </div>
+        <span class="tag tag-gold">Ожидает ответа</span>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-muted);padding:10px;background:var(--color-surface-2);border-radius:var(--radius-md);margin-bottom:10px">
+        Прошу выдать справку о доходах за последние 6 месяцев для оформления ипотеки в Halyk Bank.
+      </div>
+      <div style="font-size:11px;color:var(--color-text-faint)">Ответ ожидается в течение 1-2 рабочих дней</div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div style="font-weight:700;font-size:14px">Вопрос по расчёту отпускных</div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Категория: Отпуск / Отгул · 28.04.2026</div>
+        </div>
+        <span class="tag tag-green">Отвечено ✓</span>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-muted);padding:10px;background:var(--color-surface-2);border-radius:var(--radius-md);margin-bottom:10px">
+        Как рассчитываются отпускные? Хочу взять 14 дней в июне.
+      </div>
+      <!-- Ответ HR -->
+      <div style="border-left:2px solid var(--color-gold);padding:10px 12px;background:var(--color-gold-muted);border-radius:0 var(--radius-md) var(--radius-md) 0">
+        <div style="font-size:11px;font-weight:700;color:var(--color-gold);margin-bottom:4px">HR · Капенова Жанар · 29.04.2026</div>
+        <div style="font-size:13px">Отпускные рассчитываются как среднедневной заработок × количество дней. Заявку подайте минимум за 14 дней через кнопку "Подать на отпуск" в профиле.</div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--color-info)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div style="font-weight:700;font-size:14px">Запрос на удалённую работу</div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Категория: График / Удалёнка · 01.05.2026</div>
+        </div>
+        <span class="tag tag-blue">На рассмотрении</span>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-muted);padding:10px;background:var(--color-surface-2);border-radius:var(--radius-md)">
+        Прошу рассмотреть возможность работы удалённо по пятницам в связи с медицинскими обстоятельствами.
+      </div>
+    </div>
+
+    <div class="card" style="opacity:0.6">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+        <div>
+          <div style="font-weight:700;font-size:14px">Оформление командировки в Ащиколь</div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Категория: Командировка · 15.04.2026</div>
+        </div>
+        <span class="tag tag-gray">Закрыто</span>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-muted);padding:10px;background:var(--color-surface-2);border-radius:var(--radius-md)">
+        Командировка в СКО, Акжарский район на 3 дня для аудита элеватора.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== УВЕДОМЛЕНИЯ ===== -->
+<div class="page" id="page-notifications">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Уведомления</div>
+      <div class="page-subtitle">2 непрочитанных</div>
+    </div>
+    <button class="btn btn-secondary">
+      <i data-lucide="check-check" style="width:14px;height:14px"></i>
+      Отметить все прочитанными
+    </button>
+  </div>
+
+  <div class="card" style="padding:8px">
+    <div class="notif-item unread" style="border-radius:var(--radius-md)">
+      <div style="width:36px;height:36px;background:rgba(88,166,255,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="file-text" style="width:16px;height:16px;color:var(--color-info)"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">Новый документ требует подтверждения</div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Регламент адаптации 2026 — необходимо ознакомиться и подтвердить</div>
+        <div style="font-size:11px;color:var(--color-text-faint);margin-top:4px">02.05.2026 · 10:34</div>
+      </div>
+      <button class="btn btn-secondary" onclick="navigate('documents')" style="font-size:11px;padding:4px 10px;flex-shrink:0">Открыть</button>
+    </div>
+
+    <div style="height:1px;background:var(--color-border);margin:4px 0"></div>
+
+    <div class="notif-item unread" style="border-radius:var(--radius-md)">
+      <div style="width:36px;height:36px;background:rgba(240,165,0,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="check-square" style="width:16px;height:16px;color:var(--color-gold)"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">Назначена новая задача</div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Провести аудит систем — дедлайн 05.05.2026</div>
+        <div style="font-size:11px;color:var(--color-text-faint);margin-top:4px">01.05.2026 · 09:15</div>
+      </div>
+      <button class="btn btn-secondary" onclick="navigate('tasks')" style="font-size:11px;padding:4px 10px;flex-shrink:0">Открыть</button>
+    </div>
+
+    <div style="height:1px;background:var(--color-border);margin:4px 0"></div>
+
+    <div class="notif-item" style="border-radius:var(--radius-md)">
+      <div style="width:36px;height:36px;background:rgba(63,185,80,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="bar-chart-2" style="width:16px;height:16px;color:var(--color-success)"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">Новый опрос вовлечённости</div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">Пройдите опрос до 10.05.2026 — займёт 5 минут</div>
+        <div style="font-size:11px;color:var(--color-text-faint);margin-top:4px">30.04.2026 · 14:00</div>
+      </div>
+      <button class="btn btn-secondary" onclick="navigate('surveys')" style="font-size:11px;padding:4px 10px;flex-shrink:0">Пройти</button>
+    </div>
+
+    <div style="height:1px;background:var(--color-border);margin:4px 0"></div>
+
+    <div class="notif-item" style="border-radius:var(--radius-md);opacity:0.6">
+      <div style="width:36px;height:36px;background:var(--color-surface-3);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <i data-lucide="calendar" style="width:16px;height:16px;color:var(--color-text-muted)"></i>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:600">Событие: Встреча всей команды</div>
+        <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px">15.05.2026 в 10:00 — офис Астана, переговорная №2</div>
+        <div style="font-size:11px;color:var(--color-text-faint);margin-top:4px">28.04.2026 · 11:20</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== СОТРУДНИКИ ===== -->
+<div class="page" id="page-employees">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Сотрудники</div>
+      <div class="page-subtitle">Harvest Agro Holding · 34 сотрудника</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn btn-secondary">
+        <i data-lucide="download" style="width:14px;height:14px"></i>
+        Экспорт
+      </button>
+      <button class="btn btn-primary">
+        <i data-lucide="user-plus" style="width:14px;height:14px"></i>
+        Добавить сотрудника
+      </button>
+    </div>
+  </div>
+
+  <!-- Фильтры -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;align-items:center">
+    <div class="header-search" style="width:280px">
+      <i data-lucide="search" style="width:14px;height:14px;color:var(--color-text-muted)"></i>
+      <input type="text" placeholder="Поиск по ФИО, должности..." />
+    </div>
+    <select class="form-input" style="width:auto;padding:7px 12px">
+      <option>Все регионы</option>
+      <option>Астана</option>
+      <option>Алматы</option>
+      <option>СКО — Ащиколь</option>
+      <option>Костанай</option>
+    </select>
+    <select class="form-input" style="width:auto;padding:7px 12px">
+      <option>Все отделы</option>
+      <option>IT</option>
+      <option>HR</option>
+      <option>Финансы</option>
+      <option>Юридический</option>
+      <option>Логистика</option>
+    </select>
+  </div>
+
+  <!-- Таблица -->
+  <div class="card" style="padding:0;overflow:hidden">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="padding-left:20px">Сотрудник</th>
+            <th>Должность</th>
+            <th>Компания / Регион</th>
+            <th>Телефон</th>
+            <th>Статус</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#f0a500,#c07800);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#000;flex-shrink:0">УД</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Увашев Даулет Нурланович</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">01.06.1965</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">Директор</td>
+            <td><span class="tag tag-gold">Астана</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">8 701 761 4433</td>
+            <td><span class="tag tag-green">Активен</span></td>
+            <td><button class="btn btn-ghost" style="font-size:12px"><i data-lucide="eye" style="width:13px;height:13px"></i></button></td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0">КЖ</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Капенова Жанар Жакеновна</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">05.04.1980</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">HRD</td>
+            <td><span class="tag tag-blue">Астана</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">87014888333</td>
+            <td><span class="tag tag-green">Активна</span></td>
+            <td><button class="btn btn-ghost" style="font-size:12px"><i data-lucide="eye" style="width:13px;height:13px"></i></button></td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0">ЖА</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Акылова Жансая Раиканована</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">19.09.1989</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">HR-менеджер</td>
+            <td><span class="tag tag-blue">Астана</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">8 778 234 2313</td>
+            <td><span class="tag tag-green">Активна</span></td>
+            <td><button class="btn btn-ghost" style="font-size:12px"><i data-lucide="eye" style="width:13px;height:13px"></i></button></td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--color-navy-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0">ГТ</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px">Туленов Гурам Иванович</div>
+                  <div style="font-size:11px;color:var(--color-text-muted)">11.10.1987</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px">IT директор</td>
+            <td><span class="tag tag-blue">Астана</span></td>
+            <td style="font-size:12px;color:var(--color-text-muted)">8 701 211 5446</td>
+            <td><span class="tag tag-green">Активен</span></td>
+            <td><button class="btn btn-ghost" style="font-size:12px"><i data-lucide="eye" style="width:13px;height:13px"></i></button></td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(248,81,73,0.15);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;color:var(--color-error)">АГ</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px;text-decoration:line-through;opacity:0.5">Ахметова Гульнара Калесовна</div>
+                  <div style="font-size:11px;color:var(--color-error)">Уволена 20.04.2026</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px;opacity:0.5">Специалист по кадрам</td>
+            <td><span class="tag tag-gray">Астана</span></td>
+            <td style="font-size:12px;color:var(--color-text-faint)">8 705 216 0276</td>
+            <td><span class="tag tag-red">Уволена</span></td>
+            <td><button class="btn btn-ghost" style="font-size:12px"><i data-lucide="eye" style="width:13px;height:13px"></i></button></td>
+          </tr>
+          <tr>
+            <td style="padding-left:20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(248,81,73,0.15);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;flex-shrink:0;color:var(--color-error)">ИГ</div>
+                <div>
+                  <div style="font-weight:600;font-size:13px;text-decoration:line-through;opacity:0.5">Иманбаева Газиса Жамбулатовна</div>
+                  <div style="font-size:11px;color:var(--color-error)">Уволена 30.04.2026</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:13px;opacity:0.5">Офис-менеджер</td>
+            <td><span class="tag tag-gray">Астана</span></td>
+            <td style="font-size:12px;color:var(--color-text-faint)">8 747 030 1453</td>
+            <td><span class="tag tag-red">Уволена</span></td>
+            <td><button class="btn btn-ghost" style="font-size:12px"><i data-lucide="eye" style="width:13px;height:13px"></i></button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="padding:12px 20px;border-top:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:12px;color:var(--color-text-muted)">Показано 6 из 34 сотрудников</div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-secondary" style="font-size:12px;padding:4px 12px">← Назад</button>
+        <button class="btn btn-secondary" style="font-size:12px;padding:4px 12px">Далее →</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ===== НАЙМ ===== -->
+<div class="page" id="page-recruitment">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Найм</div>
+      <div class="page-subtitle">Воронка подбора · 12 активных вакансий</div>
+    </div>
+    <button class="btn btn-primary">
+      <i data-lucide="plus" style="width:14px;height:14px"></i>
+      Новая вакансия
+    </button>
+  </div>
+
+  <!-- Статистика -->
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:12px;color:var(--color-text-muted)">Открытых вакансий</div>
+      <div class="stat-value" style="font-size:28px">12</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:12px;color:var(--color-text-muted)">Кандидатов в работе</div>
+      <div class="stat-value gold" style="font-size:28px">34</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:12px;color:var(--color-text-muted)">Офферов выдано</div>
+      <div class="stat-value" style="font-size:28px;color:var(--color-success)">5</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:12px;color:var(--color-text-muted)">Принято в мае</div>
+      <div class="stat-value" style="font-size:28px;color:var(--color-info)">3</div>
+    </div>
+  </div>
+
+  <!-- Канбан -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;overflow-x:auto">
+
+    <!-- Новые -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em">Новые</div>
+        <span style="background:var(--color-surface-3);color:var(--color-text-muted);font-size:11px;padding:2px 7px;border-radius:var(--radius-full);font-weight:600">8</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="card" style="padding:12px;cursor:pointer" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Агроном · СКО</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Сейткали Арман</div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <span class="tag tag-gray" style="font-size:10px">hh.kz</span>
+            <span style="font-size:10px;color:var(--color-text-faint)">02.05</span>
+          </div>
+        </div>
+        <div class="card" style="padding:12px;cursor:pointer" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Бухгалтер · Астана</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Нурмаганбетова Д.</div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <span class="tag tag-gray" style="font-size:10px">Реферал</span>
+            <span style="font-size:10px;color:var(--color-text-faint)">01.05</span>
+          </div>
+        </div>
+        <div class="card" style="padding:12px;cursor:pointer" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='var(--color-border)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Водитель · Алматы</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Жаксыбеков Н.</div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <span class="tag tag-blue" style="font-size:10px">LinkedIn</span>
+            <span style="font-size:10px;color:var(--color-text-faint)">30.04</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Скрининг -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:var(--color-info);text-transform:uppercase;letter-spacing:0.05em">Скрининг</div>
+        <span style="background:rgba(88,166,255,0.1);color:var(--color-info);font-size:11px;padding:2px 7px;border-radius:var(--radius-full);font-weight:600">6</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="card" style="padding:12px;cursor:pointer;border-color:rgba(88,166,255,0.3)" onmouseover="this.style.borderColor='var(--color-info)'" onmouseout="this.style.borderColor='rgba(88,166,255,0.3)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">HR-менеджер · Астана</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Сейткалиева М.</div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <span class="tag tag-blue" style="font-size:10px">hh.kz</span>
+            <span style="font-size:10px;color:var(--color-text-faint)">28.04</span>
+          </div>
+        </div>
+        <div class="card" style="padding:12px;cursor:pointer;border-color:rgba(88,166,255,0.3)" onmouseover="this.style.borderColor='var(--color-info)'" onmouseout="this.style.borderColor='rgba(88,166,255,0.3)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">IT-разработчик · Астана</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Абдуллаев Р.</div>
+          <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+            <span class="tag tag-blue" style="font-size:10px">LinkedIn</span>
+            <span style="font-size:10px;color:var(--color-text-faint)">27.04</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Интервью -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:var(--color-gold);text-transform:uppercase;letter-spacing:0.05em">Интервью</div>
+        <span style="background:var(--color-gold-muted);color:var(--color-gold);font-size:11px;padding:2px 7px;border-radius:var(--radius-full);font-weight:600">5</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="card" style="padding:12px;cursor:pointer;border-color:rgba(240,165,0,0.3)" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.3)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Юрист · Астана</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Байменов Е.К.</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--color-gold)">📅 06.05.2026 · 11:00</div>
+          <div style="margin-top:6px;display:flex;justify-content:space-between">
+            <span class="tag tag-gold" style="font-size:10px">Реферал</span>
+          </div>
+        </div>
+        <div class="card" style="padding:12px;cursor:pointer;border-color:rgba(240,165,0,0.3)" onmouseover="this.style.borderColor='var(--color-gold)'" onmouseout="this.style.borderColor='rgba(240,165,0,0.3)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Логист · Костанай</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Токтарова А.С.</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--color-gold)">📅 07.05.2026 · 14:00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Оффер -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:var(--color-success);text-transform:uppercase;letter-spacing:0.05em">Оффер</div>
+        <span style="background:rgba(63,185,80,0.1);color:var(--color-success);font-size:11px;padding:2px 7px;border-radius:var(--radius-full);font-weight:600">5</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="card" style="padding:12px;cursor:pointer;border-color:rgba(63,185,80,0.3)" onmouseover="this.style.borderColor='var(--color-success)'" onmouseout="this.style.borderColor='rgba(63,185,80,0.3)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Главный агроном · СКО</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Омаров Б.Д.</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--color-success)">✓ Оффер отправлен 01.05</div>
+        </div>
+        <div class="card" style="padding:12px;cursor:pointer;border-color:rgba(63,185,80,0.3)" onmouseover="this.style.borderColor='var(--color-success)'" onmouseout="this.style.borderColor='rgba(63,185,80,0.3)'">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">Финансист · Астана</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Ержанова К.М.</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--color-success)">✓ Оффер отправлен 02.05</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Принят -->
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+        <div style="font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em">Принят</div>
+        <span style="background:var(--color-surface-3);color:var(--color-text-muted);font-size:11px;padding:2px 7px;border-radius:var(--radius-full);font-weight:600">3</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="card" style="padding:12px;opacity:0.7">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">HR-менеджер</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Акылова Ж.Р.</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--color-text-faint)">Принята 19.04.2026</div>
+        </div>
+        <div class="card" style="padding:12px;opacity:0.7">
+          <div style="font-weight:600;font-size:12px;margin-bottom:4px">IT-практикант</div>
+          <div style="font-size:11px;color:var(--color-text-muted)">Мусин Д.А.</div>
+          <div style="margin-top:6px;font-size:10px;color:var(--color-text-faint)">Принят 22.04.2026</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== АНАЛИТИКА ===== -->
+<div class="page" id="page-analytics">
+  <div class="page-header">
+    <div>
+      <div class="page-title">Аналитика HR</div>
+      <div class="page-subtitle">Май 2026 · Harvest Agro Holding</div>
+    </div>
+    <button class="btn btn-secondary">
+      <i data-lucide="download" style="width:14px;height:14px"></i>
+      Скачать отчёт
+    </button>
+  </div>
+
+  <!-- KPI -->
+  <div class="grid-4" style="margin-bottom:20px">
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Всего сотрудников</div>
+      <div class="stat-value" style="font-size:32px">34</div>
+      <div style="font-size:11px;color:var(--color-success);margin-top:4px">↑ +3 в этом месяце</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Текучесть кадров</div>
+      <div class="stat-value gold" style="font-size:32px">5.8%</div>
+      <div style="font-size:11px;color:var(--color-error);margin-top:4px">↑ +1.2% vs апрель</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Ср. срок найма</div>
+      <div class="stat-value" style="font-size:32px;color:var(--color-info)">18 дн</div>
+      <div style="font-size:11px;color:var(--color-success);margin-top:4px">↓ -3 дня vs апрель</div>
+    </div>
+    <div class="card" style="padding:16px">
+      <div style="font-size:11px;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px">Вовлечённость</div>
+      <div class="stat-value" style="font-size:32px;color:var(--color-success)">72%</div>
+      <div style="font-size:11px;color:var(--color-success);margin-top:4px">↑ +4% vs март</div>
+    </div>
+  </div>
+
+  <div class="grid-2-1" style="align-items:start;margin-bottom:20px">
+
+    <!-- Сотрудники по регионам -->
+    <div class="card">
+      <div class="card-title">Сотрудники по регионам</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:13px">Астана (Центральный офис)</span>
+            <span style="font-size:13px;font-weight:700">18</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:53%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:13px">СКО — Ащиколь (Элеватор)</span>
+            <span style="font-size:13px;font-weight:700">7</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill gold" style="width:21%"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:13px">Алматы</span>
+            <span style="font-size:13px;font-weight:700">5</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:15%;background:var(--color-info)"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <span style="font-size:13px">Костанай</span>
+            <span style="font-size:13px;font-weight:700">4</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:12%;background:var(--color-success)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Статусы задач -->
+    <div class="card">
+      <div class="card-title">Задачи этой недели</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:13px;color:var(--color-text-muted)">Всего задач</span>
+          <span style="font-size:20px;font-weight:800">48</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--color-success)"></div>
+            <span style="font-size:13px">Выполнено</span>
+          </div>
+          <span style="font-weight:700;color:var(--color-success)">21</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--color-gold)"></div>
+            <span style="font-size:13px">В работе</span>
+          </div>
+          <span style="font-weight:700;color:var(--color-gold)">18</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--color-error)"></div>
+            <span style="font-size:13px">Просрочено</span>
+          </div>
+          <span style="font-weight:700;color:var(--color-error)">9</span>
+        </div>
+        <div class="progress-bar" style="margin-top:4px">
+          <div class="progress-fill green" style="width:44%"></div>
+        </div>
+        <div style="font-size:11px;color:var(--color-text-muted)">44% выполнено</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Обращения по категориям -->
+  <div class="card">
+    <div class="card-title">Обращения в HR — топ категорий (май 2026)</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:13px">💰 Зарплата и выплаты</span>
+          <span style="font-size:13px;font-weight:700">12</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill gold" style="width:70%"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:13px">🏖️ Отпуск / Отгул</span>
+          <span style="font-size:13px;font-weight:700">8</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:47%;background:var(--color-info)"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:13px">📄 Справки и документы</span>
+          <span style="font-size:13px;font-weight:700">6</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:35%;background:var(--color-success)"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:13px">🏥 Больничный</span>
+          <span style="font-size:13px;font-weight:700">4</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:24%;background:var(--color-error)"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+          <span style="font-size:13px">✈️ Командировка</span>
+          <span style="font-size:13px;font-weight:700">3</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:18%;background:#a86fdf"></div></div>
+      </div>
+    </div>
+  </div>
+</div>-->
+
+  </div><!-- /main-content -->
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+// ===== НАВИГАЦИЯ =====
+function navigate(page) {
+  // Скрыть все страницы
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  
+  // Показать нужную
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+
+  // Обновить активный пункт меню
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.remove('active');
+    if (item.dataset.page === page) item.classList.add('active');
+  });
+
+  // Обновить заголовок в хедере
+  const titles = {
+    'dashboard':    'Главная',
+    'profile':      'Мой профиль',
+    'tasks':        'Задачи',
+    'documents':    'Документы',
+    'knowledge':    'База знаний',
+    'surveys':      'Опросы',
+    'calendar':     'Календарь',
+    'onboarding':   'Адаптация',
+    'hr-requests':  'Обращения в HR',
+    'notifications':'Уведомления',
+    'employees':    'Сотрудники',
+    'recruitment':  'Найм',
+    'analytics':    'Аналитика',
+    'settings':     'Настройки'
+  };
+  const headerTitle = document.getElementById('header-page-title');
+  if (headerTitle && titles[page]) headerTitle.textContent = titles[page];
+
+  // Закрыть мобильное меню если открыто
+  document.getElementById('sidebar').classList.remove('mobile-open');
+
+  // Скролл наверх
+  document.querySelector('.main-content').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Назначить клики по пунктам меню
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+  item.addEventListener('click', () => navigate(item.dataset.page));
+});
+
+// ===== УВЕДОМЛЕНИЯ (колокольчик) =====
+const notifBtn = document.getElementById('notif-btn');
+const notifDropdown = document.getElementById('notif-dropdown');
+
+if (notifBtn && notifDropdown) {
+  notifBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = notifDropdown.style.display === 'block';
+    notifDropdown.style.display = isOpen ? 'none' : 'block';
+  });
+
+  document.addEventListener('click', () => {
+    if (notifDropdown) notifDropdown.style.display = 'none';
+  });
+
+  notifDropdown.addEventListener('click', e => e.stopPropagation());
+}
+
+// ===== МОБИЛЬНОЕ МЕНЮ =====
+const menuToggle = document.getElementById('menu-toggle');
+const sidebar = document.getElementById('sidebar');
+
+if (menuToggle && sidebar) {
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('mobile-open');
+  });
+}
+
+// Закрыть сайдбар по клику на оверлей
+document.addEventListener('click', (e) => {
+  if (sidebar && sidebar.classList.contains('mobile-open')) {
+    if (!sidebar.contains(e.target) && e.target !== menuToggle) {
+      sidebar.classList.remove('mobile-open');
+    }
+  }
+});
+
+// ===== ТЕМА (тёмная/светлая) =====
+const themeToggle = document.getElementById('theme-toggle');
+const html = document.documentElement;
+let currentTheme = 'light';
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', currentTheme);
+    themeToggle.innerHTML = currentTheme === 'dark'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+}
+
+// ===== СТАТУС ЗАДАЧИ =====
+document.querySelectorAll('.task-status-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const row = this.closest('tr');
+    const statusCell = row.querySelector('.task-status');
+    if (statusCell) {
+      statusCell.innerHTML = '<span class="tag tag-green">Выполнено ✓</span>';
+    }
+    this.disabled = true;
+    this.style.opacity = '0.4';
+    showToast('Задача отмечена выполненной!', 'success');
+  });
+});
+
+// ===== TOAST УВЕДОМЛЕНИЯ =====
+function showToast(message, type = 'info') {
+  const toast = document.createElement('div');
+  toast.style.cssText = `
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: ${type === 'success' ? 'var(--color-success)' : type === 'error' ? 'var(--color-error)' : 'var(--color-navy)'};
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: var(--radius-lg);
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: slideUp 0.3s ease;
+    max-width: 320px;
+  `;
+  toast.textContent = message;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// ===== КНОПКИ "ОЗНАКОМЛЕН" =====
+document.querySelectorAll('.confirm-doc-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const row = this.closest('tr');
+    const statusCell = row ? row.querySelector('.doc-status') : null;
+    if (statusCell) {
+      statusCell.innerHTML = '<span class="tag tag-green">Подтверждён ✓</span>';
+    }
+    this.closest('.btn-group') && (this.closest('.btn-group').innerHTML =
+      '<button class="btn btn-secondary" style="font-size:11px;padding:4px 10px"><i data-lucide="download" style="width:12px;height:12px"></i> Скачать</button>');
+    lucide.createIcons();
+    showToast('Ознакомление подтверждено!', 'success');
+  });
+});
+
+// ===== ИНИЦИАЛИЗАЦИЯ ИКОНОК =====
+if (typeof lucide !== 'undefined') {
+  lucide.createIcons();
+}
+
+// ===== СТАРТОВАЯ СТРАНИЦА =====
+navigate('dashboard');
+  </script>
+
+</body>
+</html>

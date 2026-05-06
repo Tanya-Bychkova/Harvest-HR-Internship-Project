@@ -1,0 +1,65 @@
+// components/Sidebar.js
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { 
+  Home, 
+  Shirt, 
+  Sparkles, 
+  ShoppingBag, 
+  User,
+  LogOut
+} from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/store';
+
+const Sidebar = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+
+  const menuItems = [
+    { path: '/', icon: Home, label: 'Главная' },
+    { path: '/wardrobe', icon: Shirt, label: 'Гардероб' },
+    { path: '/ai-recommendations', icon: Sparkles, label: 'AI Образы' },
+    { path: '/shop', icon: ShoppingBag, label: 'Магазин' },
+    { path: '/profile', icon: User, label: 'Профиль' }
+  ];
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  return (
+    <div className="w-20 bg-white shadow-lg flex flex-col items-center py-8">
+      <div className="flex flex-col items-center space-y-8">
+        {menuItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = location.pathname === item.path;
+          
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`p-3 rounded-2xl transition-all duration-200 ${
+                isActive 
+                  ? 'bg-blue-500 text-white shadow-lg transform scale-110' 
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-blue-500'
+              }`}
+            >
+              <Icon className="w-6 h-6" />
+              <span className="sr-only">{item.label}</span>
+            </Link>
+          );
+        })}
+        
+        <button
+          onClick={handleLogout}
+          className="p-3 rounded-2xl text-gray-600 hover:bg-red-50 hover:text-red-500 mt-auto transition-all duration-200"
+        >
+          <LogOut className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default Sidebar;
