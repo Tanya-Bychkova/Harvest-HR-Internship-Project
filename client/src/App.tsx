@@ -28,7 +28,7 @@ function ProtectedRoutes() {
       <Sidebar />
       <main className="flex-1 ml-[240px] flex flex-col min-w-0">
         <TopBar />
-        <div className="p-6 flex-1">
+        <div className="p-6 flex-1 max-w-[1400px]">
           <Switch>
             <Route path="/" component={DashboardPage} />
             <Route path="/dashboard" component={DashboardPage} />
