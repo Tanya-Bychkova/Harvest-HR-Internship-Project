@@ -40,10 +40,10 @@ export default function DashboardPage() {
 
   const statCards = [
     { label: "Сотрудники", value: stats?.totalUsers, hint: `${stats?.activeUsers ?? 0} активных`, icon: Users, color: "hsl(var(--primary))" },
-    { label: "Задачи", value: stats?.tasksOpen, hint: `${stats?.tasksDone ?? 0} завершено`, icon: CheckSquare, color: "hsl(43,65%,42%)" },
-    { label: "Документы", value: stats?.documents, hint: "В системе", icon: FileText, color: "hsl(200,52%,40%)" },
-    { label: "Опросы", value: stats?.surveys, hint: "Активные", icon: ClipboardList, color: "hsl(110,32%,38%)" },
-    { label: "Обращения в HR", value: stats?.hrRequestsOpen, hint: "Открытые", icon: MessageSquare, color: "hsl(25,72%,46%)" },
+    { label: "Задачи", value: stats?.tasksOpen, hint: `${stats?.tasksDone ?? 0} завершено`, icon: CheckSquare, color: "hsl(var(--primary))" },
+    { label: "Документы", value: stats?.documents, hint: "В системе", icon: FileText, color: "hsl(var(--primary))" },
+    { label: "Опросы", value: stats?.surveys, hint: "Активные", icon: ClipboardList, color: "hsl(var(--primary))" },
+    { label: "Обращения в HR", value: stats?.hrRequestsOpen, hint: "Открытые", icon: MessageSquare, color: "hsl(var(--primary))" },
     { label: "Календарь", value: stats?.events, hint: "Предстоит", icon: CalendarDays, color: "hsl(var(--primary))" },
   ];
 
@@ -53,8 +53,8 @@ export default function DashboardPage() {
       <div
         className="rounded-xl px-6 py-5 flex items-center justify-between"
         style={{
-          background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(148,38%,28%) 100%)",
-          color: "hsl(var(--primary-foreground))",
+          background: "linear-gradient(135deg, #002642 0%, #003050 45%, #DDB12C 100%)",
+          color: "white",
         }}
       >
         <div>
