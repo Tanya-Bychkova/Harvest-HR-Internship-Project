@@ -56,10 +56,10 @@ export default function LoginPage() {
       <div
         className="hidden lg:flex flex-col justify-between w-[42%] p-12"
         style={{
-          background: "linear-gradient(160deg, hsl(148,30%,10%) 0%, hsl(148,28%,14%) 60%, hsl(140,22%,18%) 100%)",
+          background: "linear-gradient(160deg, #003050 0%, #003B63 60%, #004A7A 100%)",
         }}
       >
-        <div style={{ color: "hsl(43,78%,56%)" }}>
+        <div style={{ color: "#DDB12C" }}>
           <HarvestLogo />
         </div>
         <div>
@@ -76,7 +76,7 @@ export default function LoginPage() {
         <div className="flex gap-6">
           {["Сотрудники", "Задачи", "Курсы"].map((label) => (
             <div key={label}>
-              <div className="text-2xl font-bold" style={{ color: "hsl(43,78%,56%)" }}>—</div>
+              <div className="text-2xl font-bold" style={{ color: "#DDB12C" }}>—</div>
               <div className="text-xs mt-1" style={{ color: "rgba(255,255,255,0.4)" }}>{label}</div>
             </div>
           ))}
