@@ -20,11 +20,11 @@ export async function seedDatabase() {
     { code: "manager", name: "Руководитель" },
     { code: "admin", name: "Администратор" },
   ];
-  const existingRoles = db.select().from(rolesTable).all();
-  const haveCodes = new Set(existingRoles.map((r) => r.code));
+  const existingRoles = await db.select().from(rolesTable);
+  const haveCodes = new Set(existingRoles.map((r: any) => r.code));
   for (const r of ROLE_CATALOG) {
     if (!haveCodes.has(r.code)) {
-      db.insert(rolesTable).values(r).run();
+      await db.insert(rolesTable).values(r);
     }
   }
 

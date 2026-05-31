@@ -197,10 +197,10 @@ export default function LearningPage() {
 
       {/* View routing */}
       {view.type === "list" && (
-        <MyCoursesView courses={courses} enrollments={enrollments} onOpen={(id) => setView({ type: "course", courseId: id })} />
+        <MyCoursesView courses={courses} enrollments={enrollments} onOpen={(id: number) => setView({ type: "course", courseId: id })} />
       )}
       {view.type === "catalogue" && (
-        <CatalogueView courses={courses} enrollments={enrollments} onOpen={(id) => setView({ type: "course", courseId: id })} qc={qc} userId={user!.id} toast={toast} />
+        <CatalogueView courses={courses} enrollments={enrollments} onOpen={(id: number) => setView({ type: "course", courseId: id })} qc={qc} userId={user!.id} toast={toast} />
       )}
       {view.type === "course" && (
         <CourseDetailView
@@ -208,7 +208,7 @@ export default function LearningPage() {
           courses={courses}
           enrollments={enrollments}
           onBack={() => setView({ type: "list" })}
-          onOpenLesson={(cid, idx) => setView({ type: "lesson", courseId: cid, lessonIdx: idx })}
+          onOpenLesson={(cid: number, idx: number) => setView({ type: "lesson", courseId: cid, lessonIdx: idx })}
           qc={qc}
           userId={user!.id}
           toast={toast}
@@ -220,15 +220,15 @@ export default function LearningPage() {
           lessonIdx={view.lessonIdx}
           courses={courses}
           enrollments={enrollments}
-          onBack={(cid) => setView({ type: "course", courseId: cid })}
-          onNext={(cid, idx) => setView({ type: "lesson", courseId: cid, lessonIdx: idx })}
+          onBack={(cid: number) => setView({ type: "course", courseId: cid })}
+          onNext={(cid: number, idx: number) => setView({ type: "lesson", courseId: cid, lessonIdx: idx })}
           qc={qc}
           userId={user!.id}
           toast={toast}
         />
       )}
       {view.type === "manage" && isPrivileged && (
-        <ManageView courses={courses} enrollments={enrollments} qc={qc} toast={toast} onOpen={(id) => setView({ type: "course", courseId: id })} />
+        <ManageView courses={courses} enrollments={enrollments} qc={qc} toast={toast} onOpen={(id: number) => setView({ type: "course", courseId: id })} />
       )}
       {view.type === "analytics" && isPrivileged && (
         <AnalyticsView courses={courses} />

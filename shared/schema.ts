@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { pgTable, text, integer, serial, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -6,20 +6,20 @@ import { z } from "zod";
    Reference / dictionary tables
    ============================================================ */
 
-export const departments = sqliteTable("departments", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const departments = pgTable("departments", {
+  id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
   city: text("city"),
 });
 
-export const positions = sqliteTable("positions", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const positions = pgTable("positions", {
+  id: serial("id").primaryKey(),
   name: text("name").notNull().unique(),
 });
 
 // roles: employee | hr | manager | admin
-export const roles = sqliteTable("roles", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const roles = pgTable("roles", {
+  id: serial("id").primaryKey(),
   code: text("code").notNull().unique(), // "employee" | "hr" | "manager" | "admin"
   name: text("name").notNull(),
 });
@@ -28,8 +28,8 @@ export const roles = sqliteTable("roles", {
    Users
    ============================================================ */
 
-export const users = sqliteTable("users", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
   email: text("email").notNull().unique(),
   password: text("password").notNull(), // hashed
   firstName: text("first_name").notNull(),
@@ -51,8 +51,8 @@ export const users = sqliteTable("users", {
    Tasks
    ============================================================ */
 
-export const tasks = sqliteTable("tasks", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const tasks = pgTable("tasks", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
   creatorId: integer("creator_id").notNull(),
@@ -71,20 +71,20 @@ export const tasks = sqliteTable("tasks", {
    Documents
    ============================================================ */
 
-export const documents = sqliteTable("documents", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const documents = pgTable("documents", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
   category: text("category"),
   filePath: text("file_path"),
   uploadedBy: integer("uploaded_by").notNull(),
-  isConfirmationRequired: integer("is_confirmation_required", { mode: "boolean" }).notNull().default(false),
+  isConfirmationRequired: boolean("is_confirmation_required").notNull().default(false),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
 
-export const documentAssignments = sqliteTable("document_assignments", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const documentAssignments = pgTable("document_assignments", {
+  id: serial("id").primaryKey(),
   documentId: integer("document_id").notNull(),
   userId: integer("user_id").notNull(),
   assignedBy: integer("assigned_by").notNull(),
@@ -98,8 +98,8 @@ export const documentAssignments = sqliteTable("document_assignments", {
    Knowledge base
    ============================================================ */
 
-export const knowledgeArticles = sqliteTable("knowledge_articles", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const knowledgeArticles = pgTable("knowledge_articles", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   category: text("category"),
   body: text("body").notNull(),
@@ -114,8 +114,8 @@ export const knowledgeArticles = sqliteTable("knowledge_articles", {
    Surveys
    ============================================================ */
 
-export const surveys = sqliteTable("surveys", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const surveys = pgTable("surveys", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
   createdBy: integer("created_by").notNull(),
@@ -126,8 +126,8 @@ export const surveys = sqliteTable("surveys", {
   updatedAt: text("updated_at").notNull(),
 });
 
-export const surveyQuestions = sqliteTable("survey_questions", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const surveyQuestions = pgTable("survey_questions", {
+  id: serial("id").primaryKey(),
   surveyId: integer("survey_id").notNull(),
   text: text("text").notNull(),
   type: text("type").notNull().default("single"), // single | multi | text
@@ -135,8 +135,8 @@ export const surveyQuestions = sqliteTable("survey_questions", {
   position: integer("position").notNull().default(0),
 });
 
-export const surveyAnswers = sqliteTable("survey_answers", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const surveyAnswers = pgTable("survey_answers", {
+  id: serial("id").primaryKey(),
   surveyId: integer("survey_id").notNull(),
   questionId: integer("question_id").notNull(),
   userId: integer("user_id").notNull(),
@@ -148,8 +148,8 @@ export const surveyAnswers = sqliteTable("survey_answers", {
    HR requests
    ============================================================ */
 
-export const hrRequests = sqliteTable("hr_requests", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const hrRequests = pgTable("hr_requests", {
+  id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
   category: text("category").notNull().default("other"),
   subject: text("subject").notNull(),
@@ -160,8 +160,8 @@ export const hrRequests = sqliteTable("hr_requests", {
   closedAt: text("closed_at"),
 });
 
-export const hrRequestComments = sqliteTable("hr_request_comments", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const hrRequestComments = pgTable("hr_request_comments", {
+  id: serial("id").primaryKey(),
   requestId: integer("request_id").notNull(),
   authorId: integer("author_id").notNull(),
   message: text("message").notNull(),
@@ -172,8 +172,8 @@ export const hrRequestComments = sqliteTable("hr_request_comments", {
    Events / calendar
    ============================================================ */
 
-export const events = sqliteTable("events", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const events = pgTable("events", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
   startsAt: text("starts_at").notNull(),
@@ -188,16 +188,16 @@ export const events = sqliteTable("events", {
    Onboarding
    ============================================================ */
 
-export const onboardingTracks = sqliteTable("onboarding_tracks", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const onboardingTracks = pgTable("onboarding_tracks", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description"),
   createdBy: integer("created_by").notNull(),
   createdAt: text("created_at").notNull(),
 });
 
-export const onboardingSteps = sqliteTable("onboarding_steps", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const onboardingSteps = pgTable("onboarding_steps", {
+  id: serial("id").primaryKey(),
   trackId: integer("track_id").notNull(),
   title: text("title").notNull(),
   description: text("description"),
@@ -205,8 +205,8 @@ export const onboardingSteps = sqliteTable("onboarding_steps", {
   position: integer("position").notNull().default(0),
 });
 
-export const userOnboardingProgress = sqliteTable("user_onboarding_progress", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const userOnboardingProgress = pgTable("user_onboarding_progress", {
+  id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
   trackId: integer("track_id").notNull(),
   stepId: integer("step_id").notNull(),
@@ -219,14 +219,14 @@ export const userOnboardingProgress = sqliteTable("user_onboarding_progress", {
    Notifications
    ============================================================ */
 
-export const notifications = sqliteTable("notifications", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const notifications = pgTable("notifications", {
+  id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
   title: text("title").notNull(),
   message: text("message").notNull(),
   type: text("type").notNull().default("info"), // task | document | survey | event | hr | info
   link: text("link"),
-  isRead: integer("is_read", { mode: "boolean" }).notNull().default(false),
+  isRead: boolean("is_read").notNull().default(false),
   createdAt: text("created_at").notNull(),
 });
 
@@ -393,23 +393,23 @@ export type RegisterInput = z.infer<typeof registerSchema>;
    Learning / Courses
    ============================================================ */
 
-export const courses = sqliteTable("courses", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const courses = pgTable("courses", {
+  id: serial("id").primaryKey(),
   title: text("title").notNull(),
   description: text("description").notNull().default(""),
   category: text("category").notNull().default("Общее"),
   lane: text("lane").notNull().default("self_directed"), // mandatory | hr_assigned | self_directed
   duration: integer("duration").notNull().default(30), // minutes
   passScore: integer("pass_score").notNull().default(0), // 0 = no test required
-  published: integer("published", { mode: "boolean" }).notNull().default(true),
+  published: boolean("published").notNull().default(true),
   lessons: text("lessons").notNull().default("[]"), // JSON: [{id, title, type, content, url}]
   createdBy: integer("created_by").notNull(),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
 });
 
-export const courseEnrollments = sqliteTable("course_enrollments", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const courseEnrollments = pgTable("course_enrollments", {
+  id: serial("id").primaryKey(),
   courseId: integer("course_id").notNull(),
   userId: integer("user_id").notNull(),
   lane: text("lane").notNull().default("self_directed"),
@@ -419,13 +419,13 @@ export const courseEnrollments = sqliteTable("course_enrollments", {
   deadline: text("deadline"),
   completedAt: text("completed_at"),
   certNumber: text("cert_number"),
-  quizPassed: integer("quiz_passed", { mode: "boolean" }).notNull().default(false),
+  quizPassed: boolean("quiz_passed").notNull().default(false),
   quizScore: integer("quiz_score"),
   enrolledAt: text("enrolled_at").notNull(),
 });
 
-export const courseQuizzes = sqliteTable("course_quizzes", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const courseQuizzes = pgTable("course_quizzes", {
+  id: serial("id").primaryKey(),
   courseId: integer("course_id").notNull().unique(),
   timeLimit: integer("time_limit").notNull().default(0), // minutes, 0 = unlimited
   questions: text("questions").notNull().default("[]"), // JSON [{id, text, options[], correct_options[]}]

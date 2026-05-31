@@ -87,8 +87,8 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-6">
         <div className="w-full max-w-[400px]">
           {/* Mobile logo */}
-          <div className="lg:hidden mb-8 text-center" style={{ color: "hsl(var(--primary))" }}>
-            <HarvestLogo />
+          <div className="lg:hidden mb-8 text-center">
+            <HarvestLogo variant="dark" />
           </div>
 
           <h2 className="text-2xl font-bold mb-1" style={{ letterSpacing: "-0.02em" }}>

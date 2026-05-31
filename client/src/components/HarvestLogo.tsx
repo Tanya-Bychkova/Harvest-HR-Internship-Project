@@ -1,7 +1,7 @@
-export function HarvestLogo({ className }: { className?: string }) {
+export function HarvestLogo({ className, variant = "light" }: { className?: string; variant?: "light" | "dark" }) {
   return (
     <img
-      src="/logo.png"
+      src={variant === "dark" ? "/dark_logo.png" : "/logo.png"}
       alt="Harvest Agro"
       className={className}
     />
