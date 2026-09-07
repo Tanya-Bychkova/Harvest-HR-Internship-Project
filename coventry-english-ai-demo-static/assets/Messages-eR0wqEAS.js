@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BrrIwV8t.js";import{t}from"./MessagesView-0cdA3_uP.js";var n=e();function r(){return(0,n.jsx)(t,{eyebrow:`Student portal`})}export{r as default};
